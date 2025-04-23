@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"time"
 )
 
@@ -11,5 +12,5 @@ func main() {
 		fmt.Printf("%d--> Hello World\n", i+1)
 		time.Sleep(1 * time.Second)
 	}
-	panic("I am panic")
+	os.Exit(0)
 }
