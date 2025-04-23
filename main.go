@@ -8,7 +8,7 @@ import (
 
 func main() {
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 50; i++ {
 		fmt.Printf("%d--> Hello World\n", i+1)
 		time.Sleep(1 * time.Second)
 	}
