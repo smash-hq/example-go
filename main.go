@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"time"
 )
@@ -21,6 +22,7 @@ func main() {
 	for {
 		fmt.Printf("%d--> Hello World\n", i+1)
 		time.Sleep(1 * time.Second)
+		log.Printf("%d--> Hello World\n", i+1)
 		i++
 	}
 	select {}
