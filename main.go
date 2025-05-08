@@ -29,14 +29,14 @@ func main() {
 		fmt.Printf("Iteration %d\n", i)
 		// 发布请求给 Job B，回调 `job.A.result` 用于接收结果
 		err = nc.PublishMsg(&nats.Msg{
-			Subject: "job.B.run",             // 请求发送到 job.B.run 主题
-			Reply:   "job.A.result",          // 设置回调地址为 job.A.result
-			Data:    []byte("Hello, Job B!"), // 请求的内容
+			Subject: "job.B.run",                                      // 请求发送到 job.B.run 主题
+			Reply:   "job.A.result",                                   // 设置回调地址为 job.A.result
+			Data:    []byte(fmt.Sprintf("Hello, Job B!, I am %d", i)), // 请求的内容
 		})
 		if err != nil {
 			log.Fatal(err)
 		}
-		time.Sleep(1 * time.Second)
+		time.Sleep(2 * time.Second)
 		i++
 	}
 
