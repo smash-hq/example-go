@@ -13,7 +13,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/hello", helloHandler)
 
-	port := ":8849"
+	port := ":8848"
 	fmt.Printf("Server listening on port %s\n", port)
 	err := http.ListenAndServe(port, nil)
 	if err != nil {
