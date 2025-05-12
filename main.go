@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
@@ -13,5 +14,6 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	for i := 0; i < 100; i++ {
 		fmt.Println("Hello World")
+		time.Sleep(500 * time.Millisecond)
 	}
 }
