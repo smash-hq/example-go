@@ -11,5 +11,5 @@ RUN go mod download
 RUN go mod tidy
 RUN go build -ldflags "-s -w" -o goapp
 
-EXPOSE 8848 8848
+EXPOSE 3000 3000
 ENTRYPOINT ["./goapp"]
