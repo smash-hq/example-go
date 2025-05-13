@@ -28,8 +28,8 @@ func main() {
 	})
 
 	// 启动 HTTP 服务器监听 3000 端口
-	log.Println("HTTP server listening on :3000")
-	err := http.ListenAndServe(":3000", nil)
+	log.Println("HTTP server listening on :8848")
+	err := http.ListenAndServe(":8848", nil)
 	if err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
