@@ -4,7 +4,6 @@ import (
 	log "github.com/sirupsen/logrus"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
-	"time"
 )
 
 var K8sClient = &Client{}
@@ -46,7 +45,6 @@ func main() {
 	i := 1
 	for {
 		log.Printf("hello world-->%d", i)
-		time.Sleep(100 * time.Millisecond)
 		i++
 	}
 }
