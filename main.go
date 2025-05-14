@@ -4,6 +4,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
+	"time"
 )
 
 var K8sClient = &Client{}
@@ -42,14 +43,19 @@ func initClient(conf rest.Config) *kubernetes.Clientset {
 
 func main() {
 	log.Println("test get k8s info")
-	select {}
+	i := 1
+	for {
+		log.Printf("hello world-->%d", i)
+		time.Sleep(100 * time.Millisecond)
+		i++
+	}
 }
 
 func k8sRestConfig() rest.Config {
 	var cfg rest.Config
 	cfg, err := getRestConfByEnv()
 	if err != nil {
-		log.Fatalf("Error building kubeconfig, cause: %s", err.Error())
+		log.Errorf("Error building kubeconfig, cause: %s", err.Error())
 	}
 	return cfg
 }
