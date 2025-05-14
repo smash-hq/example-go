@@ -13,7 +13,7 @@ func main() {
 		i := 1
 		for {
 			fmt.Printf("%d-->world hello\n", i)
-			time.Sleep(1 * time.Second)
+			time.Sleep(10 * time.Millisecond)
 			i++
 		}
 	}()
