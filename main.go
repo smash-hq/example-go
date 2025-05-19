@@ -4,6 +4,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
+	"time"
 )
 
 var K8sClient = &Client{}
@@ -16,7 +17,7 @@ func init() {
 	conf := k8sRestConfig()
 	K8sClient.Clientset = initClient(conf)
 	printCurrentNamespaceInfo(K8sClient.Clientset)
-	log.Info("Init k8s client success")
+
 }
 
 func printCurrentNamespaceInfo(clientset kubernetes.Interface) {
@@ -27,6 +28,7 @@ func printCurrentNamespaceInfo(clientset kubernetes.Interface) {
 	} else {
 		log.Info("Cluster Information:")
 		log.Infof("  Kubernetes Version: %s", version.String())
+		log.Info("Init k8s client success")
 	}
 }
 
@@ -46,6 +48,7 @@ func main() {
 	for {
 		log.Printf("hello world-->%d", i)
 		i++
+		time.Sleep(2 * time.Second)
 	}
 }
 
