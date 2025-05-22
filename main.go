@@ -1,48 +1,44 @@
 package main
 
 import (
+	"fmt"
 	log "github.com/sirupsen/logrus"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/rest"
+	"os"
 	"time"
 )
 
-var K8sClient = &Client{}
-
-type Client struct {
-	Clientset *kubernetes.Clientset
-}
-
-func init() {
-	conf := k8sRestConfig()
-	K8sClient.Clientset = initClient(conf)
-	printCurrentNamespaceInfo(K8sClient.Clientset)
-
-}
-
-func printCurrentNamespaceInfo(clientset kubernetes.Interface) {
-	// 获取集群版本
-	version, err := clientset.Discovery().ServerVersion()
-	if err != nil {
-		log.Errorf("Failed to get server version: %s", err.Error())
-	} else {
-		log.Info("Cluster Information:")
-		log.Infof("  Kubernetes Version: %s", version.String())
-		log.Info("Init k8s client success")
-	}
-}
-
-// initClient 返回初始化k8s-client
-func initClient(conf rest.Config) *kubernetes.Clientset {
-	// 创建一个Kubernetes的Clientset对象
-	clientset, err := kubernetes.NewForConfig(&conf)
-	if err != nil {
-		log.Errorf("Create clientset failed, cause: %s", err.Error())
-	}
-	return clientset
-}
+const resolvPath = "/etc/resolv.conf"
 
 func main() {
+	// Step 1: 读取原始内容
+	original, err := os.ReadFile(resolvPath)
+	if err != nil {
+		fmt.Println("读取失败:", err)
+		return
+	}
+
+	fmt.Println("===== 原始 /etc/resolv.conf =====")
+	fmt.Println(string(original))
+
+	// Step 2: 构造新的内容（添加一个自定义 DNS）
+	newContent := string(original) + "\nnameserver 1.1.1.1\n"
+
+	// Step 3: 写入新内容
+	err = os.WriteFile(resolvPath, []byte(newContent), 0644)
+	if err != nil {
+		fmt.Println("写入失败:", err)
+		return
+	}
+
+	// Step 4: 读取并打印修改后的内容
+	modified, err := os.ReadFile(resolvPath)
+	if err != nil {
+		fmt.Println("再次读取失败:", err)
+		return
+	}
+
+	fmt.Println("===== 修改后 /etc/resolv.conf =====")
+	fmt.Println(string(modified))
 	log.Println("test get k8s info")
 	i := 1
 	for {
@@ -50,25 +46,4 @@ func main() {
 		i++
 		time.Sleep(2 * time.Second)
 	}
-}
-
-func k8sRestConfig() rest.Config {
-	var cfg rest.Config
-	cfg, err := getRestConfByEnv()
-	if err != nil {
-		log.Errorf("Error building kubeconfig, cause: %s", err.Error())
-	}
-	return cfg
-}
-
-// getRestConfByEnv 获取k8s restful client配置
-func getRestConfByEnv() (rest.Config, error) {
-	config, err := rest.InClusterConfig()
-	if err != nil {
-		return rest.Config{}, err
-	}
-	// 提高 QPS 和 Burst 限制
-	config.QPS = 100
-	config.Burst = 200
-	return *config, nil
 }
