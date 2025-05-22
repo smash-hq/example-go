@@ -13,8 +13,7 @@ func main() {
 	// Step 1: 读取原始内容
 	original, err := os.ReadFile(resolvPath)
 	if err != nil {
-		fmt.Println("读取失败:", err)
-		return
+		fmt.Println(fmt.Errorf("读取失败:%s", err))
 	}
 
 	fmt.Println("===== 原始 /etc/resolv.conf =====")
@@ -26,15 +25,13 @@ func main() {
 	// Step 3: 写入新内容
 	err = os.WriteFile(resolvPath, []byte(newContent), 0644)
 	if err != nil {
-		fmt.Println("写入失败:", err)
-		return
+		fmt.Println(fmt.Errorf("写入失败:%s", err))
 	}
 
 	// Step 4: 读取并打印修改后的内容
 	modified, err := os.ReadFile(resolvPath)
 	if err != nil {
-		fmt.Println("再次读取失败:", err)
-		return
+		fmt.Println(fmt.Errorf("再次读取失败:%s", err))
 	}
 
 	fmt.Println("===== 修改后 /etc/resolv.conf =====")
