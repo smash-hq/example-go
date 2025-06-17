@@ -22,6 +22,8 @@ func main() {
 	if err := Actor.Input(param); err != nil {
 		log.Errorf("input error: %v", err)
 	}
+	marshal, _ := json.Marshal(param)
+	log.Infof("params info:%v", string(marshal))
 	// get proxy url
 	proxy, err := Actor.Proxy.Proxy(context.TODO(), proxies.ProxyActor{
 		Country:         "US",
