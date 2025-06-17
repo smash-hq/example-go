@@ -15,6 +15,12 @@
       "type": "string",
       "default": "mr:1,merchagg:m515760564"
     },
+    "google_domain": {
+      "title": "google_domain",
+      "description": "google.com",
+      "type": "string",
+      "default": "google.com"
+    },
     "hl": {
       "title": "Language",
       "description": "Parameter defines the language to use for the Google search.",
