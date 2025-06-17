@@ -1,47 +1,255 @@
 {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://scrapeless.com/captcha/turnstile.schema.json",
   "title": "Scrape data from a web page",
   "type": "object",
-  "schemaVersion": 1,
+  "required": ["engine","q"],
   "properties": {
+    "engine": {
+      "title": "engine",
+      "description": "engine",
+      "type": "string",
+      "default": "scraper.google.play",
+      "enum": [
+        {
+          "label": "PLAY",
+          "value": "scraper.google.play"
+        },
+        {
+          "label": "PRODUCT",
+          "value": "scraper.google.play.product"
+        },
+        {
+          "label": "GAMES",
+          "value": "scraper.google.play.games"
+        },
+        {
+          "label": "MOVIES",
+          "value": "scraper.google.play.movies"
+        },
+        {
+          "label": "BOOKS",
+          "value": "scraper.google.play.books"
+        }
+      ]
+    },
     "q": {
-      "title": "shopping query",
-      "description": "Parameter defines the product to get results for.",
+      "title": "Search Query",
+      "description": "Parameter defines the query you want to search in Google Play Apps Store.",
       "type": "string",
-      "default": "peanuts"
+      "default": ""
     },
-    "tbs": {
-      "title": "tbs",
-      "description": "mr:1,merchagg:m515760564",
+    "apps_category": {
+      "title": "Apps Category",
+      "description": "Parameter defines the apps store category. Head to the Google Play store [Apps Categories](https://apidocs.scrapeless.com/doc-882822) for a full list of supported Google Play Apps store categories.",
       "type": "string",
-      "default": "mr:1,merchagg:m515760564"
+      "default": "",
+      "enum": [
+        {
+          "label": "ART_AND_DESIGN",
+          "value": "Apps - Art & Design"
+        },
+        {
+          "label": "AUTO_AND_VEHICLES",
+          "value": "Apps - Auto & Vehicles"
+        },
+        {
+          "label": "BEAUTY",
+          "value": "Apps - Beauty"
+        },
+        {
+          "label": "BOOKS_AND_REFERENCE",
+          "value": "Apps - Books & Reference"
+        },
+        {
+          "label": "BUSINESS",
+          "value": "Apps - Business"
+        },
+        {
+          "label": "COMICS",
+          "value": "Apps - Comics"
+        },
+        {
+          "label": "COMMUNICATION",
+          "value": "Apps - Communication"
+        },
+        {
+          "label": "DATING",
+          "value": "Apps - Dating"
+        },
+        {
+          "label": "EDUCATION",
+          "value": "Apps - Education"
+        },
+        {
+          "label": "ENTERTAINMENT",
+          "value": "Apps - Entertainment"
+        },
+        {
+          "label": "EVENTS",
+          "value": "Apps - Events"
+        },
+        {
+          "label": "FINANCE",
+          "value": "Apps - Finance"
+        },
+        {
+          "label": "FOOD_AND_DRINK",
+          "value": "Apps - Food & Drink"
+        },
+        {
+          "label": "HEALTH_AND_FITNESS",
+          "value": "Apps - Health & Fitness"
+        },
+        {
+          "label": "HOUSE_AND_HOME",
+          "value": "Apps - House & Home"
+        },
+        {
+          "label": "LIBRARIES_AND_DEMO",
+          "value": "Apps - Libraries & Demo"
+        },
+        {
+          "label": "LIFESTYLE",
+          "value": "Apps - Lifestyle"
+        },
+        {
+          "label": "MAPS_AND_NAVIGATION",
+          "value": "Apps - Maps & Navigation"
+        },
+        {
+          "label": "MEDICAL",
+          "value": "Apps - Medical"
+        },
+        {
+          "label": "MUSIC_AND_AUDIO",
+          "value": "Apps - Music & Audio"
+        },
+        {
+          "label": "NEWS_AND_MAGAZINES",
+          "value": "Apps - News & Magazines"
+        },
+        {
+          "label": "PARENTING",
+          "value": "Apps - Parenting"
+        },
+        {
+          "label": "PERSONALIZATION",
+          "value": "Apps - Personalization"
+        },
+        {
+          "label": "PHOTOGRAPHY",
+          "value": "Apps - Photography"
+        },
+        {
+          "label": "PRODUCTIVITY",
+          "value": "Apps - Productivity"
+        },
+        {
+          "label": "SHOPPING",
+          "value": "Apps - Shopping"
+        },
+        {
+          "label": "SOCIAL",
+          "value": "Apps - Social"
+        },
+        {
+          "label": "SPORTS",
+          "value": "Apps - Sports"
+        },
+        {
+          "label": "TOOLS",
+          "value": "Apps - Tools"
+        },
+        {
+          "label": "TRAVEL_AND_LOCAL",
+          "value": "Apps - Travel & Local"
+        },
+        {
+          "label": "VIDEO_PLAYERS",
+          "value": "Apps - Video Players & Editors"
+        },
+        {
+          "label": "ANDROID_WEAR",
+          "value": "Apps - Wear OS by Google"
+        },
+        {
+          "label": "WATCH_FACE",
+          "value": "Apps - Watch faces"
+        },
+        {
+          "label": "WEATHER",
+          "value": "Apps - Weather"
+        },
+        {
+          "label": "FAMILY",
+          "value": "Kids"
+        }
+      ]
     },
-    "google_domain": {
-      "title": "google_domain",
-      "description": "google.com",
+    "age": {
+      "title": "Age",
+      "description": "Parameter defines age subcategory. age works, and should only be used with `apps_category=FAMILY(Kids Apps)`.\n\nIt can be set to:\n`AGE_RANGE1` - Ages up to 5\n`AGE_RANGE2` - Ages 6-8\n`AGE_RANGE3` - Ages 1-12\n\n The default value for `age` is:\n-All ages up to 12",
       "type": "string",
-      "default": "google.com"
+      "default": "",
+      "enum": [
+        {
+          "label": "Ages up to 5",
+          "value": "AGE_RANGE1"
+        },
+        {
+          "label": "Ages 6-8",
+          "value": "AGE_RANGE2"
+        },
+        {
+          "label": "Ages 9-12",
+          "value": "AGE_RANGE3"
+        }
+      ]
     },
-    "hl": {
-      "title": "Language",
-      "description": "Parameter defines the language to use for the Google search.",
+    "store_device": {
+      "title": "Store Device",
+      "description": "Parameter defines the device for sorting results. This parameter cannot be used with `apps_category` or `q` parameters. Available options:\nphone - Phone device (default)\ntablet - Tablet device\ntv - TV device\nchromebook - Chromebook device\nwatch - Watch device\ncar - Car device",
       "type": "string",
-      "default": "en-sg"
+      "default": "",
+      "enum": [
+        {
+          "label": "Phone",
+          "value": "phone"
+        },
+        {
+          "label": "Watch",
+          "value": "watch"
+        },
+        {
+          "label": "Tablet",
+          "value": "tablet"
+        },
+        {
+          "label": "TV",
+          "value": "tv"
+        },
+        {
+          "label": "Chromebook",
+          "value": "chromebook"
+        },
+        {
+          "label": "Car",
+          "value": "car"
+        }
+      ]
     },
     "gl": {
       "title": "Country",
-      "description": "Parameter defines the country to use for the Google search.",
+      "description": "Parameter defines the country to use for the Google search. It's a two-letter country code. (e.g., `us` for the United States, `uk` for United Kingdom, or `fr` for France).",
       "type": "string",
       "default": "us"
     },
-    "is_return_raw_html": {
-      "title": "is_return_raw_html",
-      "description": "is_return_raw_html",
+    "hl": {
+      "title": "Language",
+      "description": "Parameter defines the language to use for the Google search. It's a two-letter language code. (e.g., `en` for English, `es` for Spanish, or `fr` for French).",
       "type": "string",
-      "default": "0"
+      "default": "en-sg"
     }
-  },
-  "required": [
-    "q",
-    "is_return_raw_html"
-  ]
+  }
 }

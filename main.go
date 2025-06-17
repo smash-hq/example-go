@@ -3,6 +3,11 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"example/actor/play"
+	"example/actor/play/play_books"
+	"example/actor/play/play_games"
+	"example/actor/play/play_movies"
+	"example/actor/play/play_product"
 	"fmt"
 	"github.com/scrapeless-ai/sdk-go/scrapeless/actor"
 	"github.com/scrapeless-ai/sdk-go/scrapeless/services/proxies"
@@ -14,8 +19,7 @@ import (
 )
 
 var (
-	Actor    *actor.Actor
-	ProxyStr string
+	Actor *actor.Actor
 )
 
 func init() {
@@ -39,7 +43,7 @@ func main() {
 	// new Actor
 	Actor = actor.New()
 	defer Actor.Close()
-	var param = &RequestParam{}
+	var param = &play.RequestParams{}
 
 	if err := Actor.Input(param); err != nil {
 		log.Errorf("input error: %v", err)
@@ -54,23 +58,70 @@ func main() {
 	if err != nil {
 		log.Errorf("get proxy error: %v", err)
 	}
-	ProxyStr = proxy
-	log.Infof("proxy url:%s", ProxyStr)
-	shopping, err := doShopping(context.TODO(), param)
-	filters, _ := json.Marshal(shopping.Filters)
-	results, _ := json.Marshal(shopping.ShoppingResults)
-	inlineShoppingResults, _ := json.Marshal(shopping.InlineShoppingResults)
-	serapMetadata, _ := json.Marshal(shopping.SearchMetadata)
-	ok, err := Actor.AddItems(context.Background(), []map[string]any{
+	//proxy = "http://group_scraper_google_trneds:c8d2279d492a@pm-gw-us.scrapeless.io:24125"
+	log.Infof("proxy url:%s", proxy)
+
+	paramErr := param.FieldValidation(param.Type)
+	if paramErr != nil {
+		log.Warnf("param error: %v", paramErr)
+	}
+	var res *play.Response
+	var resErr error
+	switch param.Type {
+	case play.GooglePlayGames:
+		res, resErr = play_games.Request(context.TODO(), param, proxy)
+	case play.GooglePlayProduct:
+		res, resErr = play_product.Request(context.TODO(), param, proxy)
+	case play.GooglePlayMovies:
+		res, resErr = play_movies.Request(context.TODO(), param, proxy)
+	case play.GooglePlayBooks:
+		res, resErr = play_books.Request(context.TODO(), param, proxy)
+	case play.GooglePlay:
+		res, resErr = play_books.Request(context.TODO(), param, proxy)
+	default:
+		res, resErr = play_games.Request(context.TODO(), param, proxy)
+	}
+	if resErr != nil {
+		log.Errorf("success=false,  err=%v", err)
+		return
+	}
+	bytes, err := json.Marshal(res)
+	if err != nil {
+		log.Errorf("success=false,  err=%v", err)
+		return
+	}
+	log.Infof("success=true, res=%s", bytes)
+
+	if res == nil {
+		log.Warnf("res is nil")
+		return
+	}
+	items, err := Actor.AddItems(context.TODO(), []map[string]any{
 		{
-			"filters":                 string(filters),
-			"results":                 string(results),
-			"inline_shopping_results": string(inlineShoppingResults),
-			"serapMetadata":           string(serapMetadata),
+			"title":             "Play Store",
+			"search_parameters": toString(res.SearchParameters),
+			"search_metadata":   toString(res.SearchMetadata),
+			"chart_option":      toString(res.ChartOption),
+			"highlight_item":    toString(res.HighlightItem),
+			"organic_results":   toString(res.OrganicResults),
+			"product_info":      toString(res.ProductInfo),
+			"Media":             toString(res.Media),
+			"about_this_app":    toString(res.AboutThisApp),
+			"categories":        toString(res.Categories),
+			"what_s_new":        toString(res.WhatIsNew),
+			"ratings":           toString(res.Ratings),
+			"reviews":           toString(res.Reviews),
+			"developer_contact": toString(res.DeveloperContact),
+			"similar_results":   toString(res.SimilarResults),
 		},
 	})
 	if err != nil {
-		log.Errorf("add items error: %v", err)
+		log.Warnf("add items error: %v", err)
 	}
-	log.Println(ok)
+	log.Infof("add items success: %v", items)
+}
+
+func toString(obj any) string {
+	marshal, _ := json.Marshal(obj)
+	return string(marshal)
 }
