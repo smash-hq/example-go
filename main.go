@@ -45,11 +45,9 @@ func main() {
 	Actor = actor.New()
 	defer Actor.Close()
 	var param = &play.RequestParams{}
-	data := `{"QS":"cat,dog","age":"","apps_category":"","engine":"scraper.google.play","gl":"us","hl":"en-sg","store_device":""}`
-	//if err := Actor.Input(param); err != nil {
-	//	log.Errorf("input error: %v", err)
-	//}
-	_ = json.Unmarshal([]byte(data), param)
+	if err := Actor.Input(param); err != nil {
+		log.Errorf("input error: %v", err)
+	}
 	// get proxy url
 	proxy, err := Actor.Proxy.Proxy(context.TODO(), proxies.ProxyActor{
 		Country:         "US",
