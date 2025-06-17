@@ -78,10 +78,10 @@ func doShopping(ctx context.Context, params *RequestParam) (*Response, error) {
 		req.Header.Set("x-browser-year", "2025")
 		resp, respError := client.Do(req)
 		if respError != nil {
-			return nil, errors.New("request err")
+			return nil, errors.New("request err, cause: " + respError.Error())
 		}
 		if resp.StatusCode != http.StatusOK {
-			return nil, errors.New("request err")
+			return nil, errors.New("request err, statusCode: " + strconv.Itoa(resp.StatusCode))
 		}
 		return resp, nil
 	},
