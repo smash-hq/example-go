@@ -1,19 +1,19 @@
 package main
 
 type RequestParam struct {
-	Q            string `url:"q"`
-	Location     string `url:"location"`
-	ComeBack     string `url:"come_back"`
-	GoogleDomain string `url:"google_domain"`
-	Gl           string `url:"gl"`
-	Hl           string `url:"hl"`
-	Tbs          string `url:"tbs"`
-	Shoprs       string `url:"shoprs"`
-	DirectLink   string `url:"direct_link"`
-	Start        string `url:"start"`
-	Engine       string `url:"engine"`
+	Q            string `url:"q" json:"q"`
+	Location     string `url:"location" json:"location"`
+	ComeBack     string `url:"come_back" json:"come_back"`
+	GoogleDomain string `url:"google_domain" json:"google_domain"`
+	Gl           string `url:"gl" json:"gl"`
+	Hl           string `url:"hl" json:"hl"`
+	Tbs          string `url:"tbs" json:"tbs"`
+	Shoprs       string `url:"shoprs" json:"shoprs"`
+	DirectLink   string `url:"direct_link" json:"direct_link"`
+	Start        string `url:"start" json:"start"`
+	Engine       string `url:"engine" json:"engine"`
 
-	IsReturnRawHtml string `json:"is_return_raw_html"` // "1" 为返回原始html
+	IsReturnRawHtml string `json:"is_return_raw_html" json:"is_return_raw_html"` // "1" 为返回原始html
 }
 
 type Response struct {

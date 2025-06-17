@@ -32,7 +32,16 @@
       "description": "Parameter defines the country to use for the Google search.",
       "type": "string",
       "default": "us"
+    },
+    "is_return_raw_html": {
+      "title": "is_return_raw_html",
+      "description": "is_return_raw_html",
+      "type": "string",
+      "default": "0"
     }
   },
-  "required": ["q"]
+  "required": [
+    "q",
+    "is_return_raw_html"
+  ]
 }

@@ -35,11 +35,13 @@ func main() {
 	filters, _ := json.Marshal(shopping.Filters)
 	results, _ := json.Marshal(shopping.ShoppingResults)
 	inlineShoppingResults, _ := json.Marshal(shopping.InlineShoppingResults)
+	serapMetadata, _ := json.Marshal(shopping.SearchMetadata)
 	ok, err := Actor.AddItems(context.Background(), []map[string]any{
 		{
 			"filters":                 filters,
 			"results":                 results,
 			"inline_shopping_results": inlineShoppingResults,
+			"serapMetadata":           serapMetadata,
 		},
 	})
 	if err != nil {
