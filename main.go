@@ -3,15 +3,37 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/scrapeless-ai/sdk-go/scrapeless/actor"
 	"github.com/scrapeless-ai/sdk-go/scrapeless/services/proxies"
 	log "github.com/sirupsen/logrus"
+	"os"
+	"path"
+	"runtime"
+	"time"
 )
 
 var (
 	Actor    *actor.Actor
 	ProxyStr string
 )
+
+func init() {
+	log.SetOutput(os.Stdout)
+	log.SetFormatter(&log.TextFormatter{
+		FullTimestamp: true,
+		DisableColors: false,
+		ForceColors:   true,
+		CallerPrettyfier: func(f *runtime.Frame) (function string, file string) {
+			filename := path.Base(f.File)
+			fc := path.Base(f.Function)
+			return fmt.Sprintf("%s()", fc), fmt.Sprintf(" - %s:%d", filename, f.Line)
+		},
+		TimestampFormat: time.DateTime,
+	})
+	log.SetReportCaller(true)
+	log.SetLevel(log.InfoLevel)
+}
 
 func main() {
 	// new Actor
@@ -33,6 +55,7 @@ func main() {
 		log.Errorf("get proxy error: %v", err)
 	}
 	ProxyStr = proxy
+	log.Infof("proxy url:%s", ProxyStr)
 	shopping, err := doShopping(context.TODO(), param)
 	filters, _ := json.Marshal(shopping.Filters)
 	results, _ := json.Marshal(shopping.ShoppingResults)

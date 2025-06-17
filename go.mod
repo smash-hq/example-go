@@ -8,7 +8,7 @@ require (
 	github.com/bogdanfinn/fhttp v0.5.36
 	github.com/bogdanfinn/tls-client v1.9.2
 	github.com/google/go-querystring v1.1.0
-	github.com/scrapeless-ai/sdk-go v0.0.2
+	github.com/scrapeless-ai/sdk-go v0.0.4
 	github.com/sirupsen/logrus v1.9.3
 )
 
