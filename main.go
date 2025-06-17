@@ -3,16 +3,14 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"github.com/scrapeless-ai/scrapeless-actor-sdk-go/scrapeless"
-	"github.com/scrapeless-ai/scrapeless-actor-sdk-go/scrapeless/actor"
-	"github.com/scrapeless-ai/scrapeless-actor-sdk-go/scrapeless/services/proxies"
+	"github.com/scrapeless-ai/sdk-go/scrapeless/actor"
+	"github.com/scrapeless-ai/sdk-go/scrapeless/services/proxies"
 	"log"
 )
 
 var (
-	Actor       *actor.Actor
-	ActorClient *scrapeless.Client
-	ProxyStr    string
+	Actor    *actor.Actor
+	ProxyStr string
 )
 
 func main() {
@@ -37,7 +35,7 @@ func main() {
 	filters, _ := json.Marshal(shopping.Filters)
 	results, _ := json.Marshal(shopping.ShoppingResults)
 	inlineShoppingResults, _ := json.Marshal(shopping.InlineShoppingResults)
-	ok, err := Actor.Storage.GetDataset().AddItems(context.Background(), []map[string]any{
+	ok, err := Actor.AddItems(context.Background(), []map[string]any{
 		{
 			"filters":                 filters,
 			"results":                 results,
