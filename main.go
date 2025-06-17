@@ -15,6 +15,7 @@ import (
 	"os"
 	"path"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -59,43 +60,32 @@ func main() {
 		log.Errorf("get proxy error: %v", err)
 	}
 	//proxy = "http://group_scraper_google_trneds:c8d2279d492a@pm-gw-us.scrapeless.io:24125"
-	log.Infof("proxy url:%s", proxy)
+	log.Infof("proxy url--> %s", proxy)
 
-	paramErr := param.FieldValidation(param.Type)
-	if paramErr != nil {
-		log.Warnf("param error: %v", paramErr)
+	var ps []play.RequestParams
+	qs := strings.Split(param.QS, ",")
+	if len(qs) <= 0 {
+		ps = append(ps, *param)
+	} else {
+		for _, q := range qs {
+			p := *param
+			p.Q = q
+			ps = append(ps, p)
+		}
 	}
-	var res *play.Response
-	var resErr error
-	switch param.Type {
-	case play.GooglePlayGames:
-		res, resErr = play_games.Request(context.TODO(), param, proxy)
-	case play.GooglePlayProduct:
-		res, resErr = play_product.Request(context.TODO(), param, proxy)
-	case play.GooglePlayMovies:
-		res, resErr = play_movies.Request(context.TODO(), param, proxy)
-	case play.GooglePlayBooks:
-		res, resErr = play_books.Request(context.TODO(), param, proxy)
-	case play.GooglePlay:
-		res, resErr = play_books.Request(context.TODO(), param, proxy)
-	default:
-		res, resErr = play_games.Request(context.TODO(), param, proxy)
-	}
-	if resErr != nil {
-		log.Errorf("success=false,  err=%v", err)
-		return
-	}
-	bytes, err := json.Marshal(res)
-	if err != nil {
-		log.Errorf("success=false,  err=%v", err)
-		return
-	}
-	log.Infof("success=true, res=%s", bytes)
 
-	if res == nil {
-		log.Warnf("res is nil")
-		return
+	for i, p := range ps {
+		paramErr := param.FieldValidation(p.Type)
+		if paramErr != nil {
+			log.Warnf("param error: %v", paramErr)
+		}
+		res := doCrawl(param, proxy, err)
+		save(res, i)
 	}
+
+}
+
+func save(res *play.Response, i int) {
 	items, err := Actor.AddItems(context.TODO(), []map[string]any{
 		{
 			"title":             "Play Store",
@@ -116,9 +106,44 @@ func main() {
 		},
 	})
 	if err != nil {
-		log.Warnf("add items error: %v", err)
+		log.Warnf("%d--> add items error: %v", i, err)
 	}
-	log.Infof("add items success: %v", items)
+	log.Infof("%d--> add items success: %v", i, items)
+}
+
+func doCrawl(param *play.RequestParams, proxy string, err error) *play.Response {
+	var res *play.Response
+	var resErr error
+	switch param.Type {
+	case play.GooglePlayGames:
+		res, resErr = play_games.Request(context.TODO(), param, proxy)
+	case play.GooglePlayProduct:
+		res, resErr = play_product.Request(context.TODO(), param, proxy)
+	case play.GooglePlayMovies:
+		res, resErr = play_movies.Request(context.TODO(), param, proxy)
+	case play.GooglePlayBooks:
+		res, resErr = play_books.Request(context.TODO(), param, proxy)
+	case play.GooglePlay:
+		res, resErr = play_books.Request(context.TODO(), param, proxy)
+	default:
+		res, resErr = play_games.Request(context.TODO(), param, proxy)
+	}
+	if resErr != nil {
+		log.Errorf("success=false,  err=%v", err)
+		return nil
+	}
+	bytes, err := json.Marshal(res)
+	if err != nil {
+		log.Errorf("success=false,  err=%v", err)
+		return nil
+	}
+	log.Infof("success=true, res=%s", bytes)
+
+	if res == nil {
+		log.Warnf("res is nil")
+		return nil
+	}
+	return res
 }
 
 func toString(obj any) string {

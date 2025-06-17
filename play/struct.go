@@ -16,6 +16,7 @@ type RequestParams struct {
 	*/
 	//Actor string `json:"engine,omitempty"`
 	Q  string `json:"q"`            // query查询内容
+	QS string `json:"qs"`           // querys查询内容
 	GL string `json:"gl,omitempty"` // country
 	HL string `json:"hl,omitempty"` // Language
 	/*

@@ -32,7 +32,7 @@
         }
       ]
     },
-    "q": {
+    "QS": {
       "title": "Search Query",
       "description": "Parameter defines the query you want to search in Google Play Apps Store.",
       "type": "string",
