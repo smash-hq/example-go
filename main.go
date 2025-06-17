@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"github.com/scrapeless-ai/sdk-go/scrapeless/actor"
 	"github.com/scrapeless-ai/sdk-go/scrapeless/services/proxies"
-	"log"
+	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -20,7 +20,7 @@ func main() {
 	var param = &RequestParam{}
 
 	if err := Actor.Input(param); err != nil {
-		log.Fatal(err)
+		log.Errorf("input error: %v", err)
 	}
 	// get proxy url
 	proxy, err := Actor.Proxy.Proxy(context.TODO(), proxies.ProxyActor{
@@ -28,7 +28,7 @@ func main() {
 		SessionDuration: 10,
 	})
 	if err != nil {
-		log.Fatal(err)
+		log.Errorf("get proxy error: %v", err)
 	}
 	ProxyStr = proxy
 	shopping, err := doShopping(context.TODO(), param)
@@ -43,7 +43,7 @@ func main() {
 		},
 	})
 	if err != nil {
-		log.Fatal(err)
+		log.Errorf("add items error: %v", err)
 	}
 	log.Println(ok)
 }
