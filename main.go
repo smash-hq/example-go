@@ -45,12 +45,11 @@ func main() {
 	Actor = actor.New()
 	defer Actor.Close()
 	var param = &play.RequestParams{}
-
-	if err := Actor.Input(param); err != nil {
-		log.Errorf("input error: %v", err)
-	}
-	marshal, _ := json.Marshal(param)
-	log.Infof("params info:%v", string(marshal))
+	data := `{"QS":"cat,dog","age":"","apps_category":"","engine":"scraper.google.play","gl":"us","hl":"en-sg","store_device":""}`
+	//if err := Actor.Input(param); err != nil {
+	//	log.Errorf("input error: %v", err)
+	//}
+	_ = json.Unmarshal([]byte(data), param)
 	// get proxy url
 	proxy, err := Actor.Proxy.Proxy(context.TODO(), proxies.ProxyActor{
 		Country:         "US",
@@ -75,11 +74,11 @@ func main() {
 	}
 
 	for i, p := range ps {
-		paramErr := param.FieldValidation(p.Type)
+		paramErr := p.FieldValidation(p.Type)
 		if paramErr != nil {
 			log.Warnf("param error: %v", paramErr)
 		}
-		res := doCrawl(param, proxy, err)
+		res := doCrawl(&p, proxy, err)
 		save(res, i)
 	}
 
