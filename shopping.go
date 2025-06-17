@@ -32,7 +32,10 @@ func doShopping(ctx context.Context, params *RequestParam) (*Response, error) {
 		tls_client.WithCookieJar(jar),
 	}
 	client, _ := tls_client.NewHttpClient(tls_client.NewNoopLogger(), options...)
-	client.SetProxy(ProxyStr)
+	err := client.SetProxy(ProxyStr)
+	if err != nil {
+		return nil, err
+	}
 
 	resp, err := retry.DoWithData(func() (*http.Response, error) {
 		urlQuery, _ := query.Values(params)

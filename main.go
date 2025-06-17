@@ -63,10 +63,10 @@ func main() {
 	serapMetadata, _ := json.Marshal(shopping.SearchMetadata)
 	ok, err := Actor.AddItems(context.Background(), []map[string]any{
 		{
-			"filters":                 filters,
-			"results":                 results,
-			"inline_shopping_results": inlineShoppingResults,
-			"serapMetadata":           serapMetadata,
+			"filters":                 string(filters),
+			"results":                 string(results),
+			"inline_shopping_results": string(inlineShoppingResults),
+			"serapMetadata":           string(serapMetadata),
 		},
 	})
 	if err != nil {
