@@ -2,7 +2,7 @@
   "title": "Scrape data from google play store",
   "type": "object",
   "schemaVersion": 1,
-  "required": ["engine","q"],
+  "required": ["engine"],
   "properties": {
     "engine": {
       "title": "engine",
