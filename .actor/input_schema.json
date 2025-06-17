@@ -3,6 +3,30 @@
   "type": "object",
   "schemaVersion": 1,
   "properties": {
+    "q": {
+      "title": "shopping query",
+      "description": "Parameter defines the product to get results for.",
+      "type": "string",
+      "default": "peanuts"
+    },
+    "tbs": {
+      "title": "tbs",
+      "description": "mr:1,merchagg:m515760564",
+      "type": "string",
+      "default": "mr:1,merchagg:m515760564"
+    },
+    "hl": {
+      "title": "Language",
+      "description": "Parameter defines the language to use for the Google search.",
+      "type": "string",
+      "default": "en-sg"
+    },
+    "gl": {
+      "title": "Country",
+      "description": "Parameter defines the country to use for the Google search.",
+      "type": "string",
+      "default": "us"
+    }
   },
-  "required": []
+  "required": ["product_id"]
 }
