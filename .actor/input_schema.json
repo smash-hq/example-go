@@ -28,5 +28,5 @@
       "default": "us"
     }
   },
-  "required": ["product_id"]
+  "required": ["q"]
 }
