@@ -1,8 +1,7 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://scrapeless.com/captcha/turnstile.schema.json",
-  "title": "Scrape data from a web page",
+  "title": "Scrape data from google play store",
   "type": "object",
+  "schemaVersion": 1,
   "required": ["engine","q"],
   "properties": {
     "engine": {
